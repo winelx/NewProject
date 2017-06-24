@@ -1,0 +1,18 @@
+<resources>
+       <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="editext">16dp</dimen>
+    <dimen name="iteam_textview_textsize">16dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">18dp</dimen>
+    <dimen name="action_name">23sp</dimen>
+    <dimen name="action_editext">15sp</dimen>
+    <dimen name="iteam_ImageView">25dp</dimen>
+    <dimen name="iteam_textview_marginLeft">8dp</dimen>
+    <dimen name="clock_textview">25sp</dimen>
+    <dimen name="clock_imploson">35sp</dimen>
+</resources>

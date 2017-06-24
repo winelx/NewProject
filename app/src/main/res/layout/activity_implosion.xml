@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorggrey"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorggrey" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_marginLeft="20dp"
+        android:gravity="center_vertical"
+        android:text="请选择类型"
+        android:textColor="@color/colorblack" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@color/colorwhite">
+
+        <GridView
+            android:id="@+id/gridView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/button"
+            android:columnWidth="80dp"
+            android:horizontalSpacing="5dp"
+            android:numColumns="auto_fit"
+            android:verticalSpacing="10dp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_marginLeft="25dp"
+        android:background="@color/colorggrey"
+        android:gravity="center_vertical"
+        android:text="拍摄伞周围的环境，便于维修师傅找到"
+        android:textColor="@color/colorblack" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@color/colorwhite">
+
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/colorggrey"
+        android:gravity="center_vertical"
+        android:text="伞的编号"
+        android:textColor="@color/colorblack" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorwhite"
+        android:hint="       编号损坏不用填下"
+        android:textColor="@color/colorblack"
+        android:textSize="@dimen/activity_vertical_margin" />
+
+    <Button
+        android:layout_width="160dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/button_rounded_background_blue"
+        android:text="提交"
+        android:textColor="@color/colorwhite"
+        android:textSize="@dimen/iteam_textview_textsize" />
+</LinearLayout>

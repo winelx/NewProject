@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.95"
+        android:background="@color/cloclblue"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="280dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="70dp"
+            android:background="@drawable/button_rounded_background_white"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:text="倒计时"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/activity_vertical_margin" />
+
+
+            <Chronometer
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:format="00:00:00"
+                android:gravity="center_horizontal"
+                android:textColor="@color/colorblack"
+                android:textSize="@dimen/clock_imploson" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="开始计费"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/activity_vertical_margin" />
+
+
+        </LinearLayout>
+
+        <TextView
+
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:gravity="center_horizontal"
+            android:text="0元"
+            android:textColor="@color/colorwhite"
+            android:textSize="@dimen/action_name" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:gravity="center_horizontal"
+            android:text="预计金额"
+            android:textColor="@color/colorwhite"
+            android:textSize="@dimen/activity_vertical_margin" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="25dp"
+            android:background="@color/cloclblue"
+            android:padding="10dp"
+            android:text="J3HG48DD"
+            android:textColor="@color/colorwhite"
+            android:textSize="@dimen/clock_imploson" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="请在机器上输入此验证码"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/activity_horizontal_margin" />
+
+        <Button
+            android:layout_width="160dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/button_rounded_background_blue"
+            android:text="还伞"
+            android:textColor="@color/colorwhite"
+            android:textSize="@dimen/activity_horizontal_margin" />
+
+    </LinearLayout>
+</LinearLayout>
