@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -30,6 +31,8 @@ import com.example.a10942.newproject.Utils.SensorEventHelper;
 import com.google.zxing.client.android.ScannerActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import me.weyye.hipermission.HiPermission;
+import me.weyye.hipermission.PermissionCallback;
 
 
 public class MainActivity extends AppCompatActivity implements LocationSource,
@@ -41,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     private AMapLocationClientOption mLocationOption;
     private static final int STROKE_COLOR = Color.argb(180, 3, 145, 255);
     private static final int FILL_COLOR = Color.argb(10, 0, 0, 180);
+    private static final int LOCATION_PERMISSION_CODE = 100;
+    private static final int STORAGE_PERMISSION_CODE = 101;
     private boolean mFirstFix = false;
     private Marker mLocMarker;
     private SensorEventHelper mSensorHelper;
@@ -50,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     public static final String LOCATION_MARKER_FLAG = "mylocation";
     private SPUtils sputils;
     boolean str;
+    private String TAG = "MianActivity";
     //侧拉界控件
     private LinearLayout header_mian_mypurse, header_mian_myfavorable, header_mian_myrecord, header_mian_shiyong, header_mian_setting;
 
@@ -60,6 +66,29 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         mContext = MainActivity.this;
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
+        HiPermission.create(mContext)
+                .checkMutiPermission(new PermissionCallback() {
+                    @Override
+                    public void onClose() {
+                        Log.i(TAG, "onClose");
+                        showToast("用户关闭权限申请");
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        showToast("所有权限申请完成");
+                    }
+
+                    @Override
+                    public void onDeny(String permisson, int position) {
+                        Log.i(TAG, "onDeny");
+                    }
+
+                    @Override
+                    public void onGuarantee(String permisson, int position) {
+                        Log.i(TAG, "onGuarantee");
+                    }
+                });
         //初始化
         init();
         findView();
@@ -71,11 +100,11 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
      */
     private void init() {
         str = sputils.contains(mContext, "userName");
-//        if (str != true) {
-//            Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();
-//            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-//            this.finish();
-//        }
+        if (str != true) {
+            Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            this.finish();
+        }
         if (aMap == null) {
             aMap = mapView.getMap();
             setUpMap();
@@ -114,8 +143,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
             String result = data.getStringExtra("result");
             Intent intent = new Intent(MainActivity.this, ClockActivity.class);
             intent.putExtra("Result", result);
-           Log.i("sss", result);
-           startActivity(intent);
+            Log.i("sss", result);
+            startActivity(intent);
 
             // 关闭当前页面
             System.exit(0);
@@ -248,6 +277,10 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         options.position(latlng);
         mLocMarker = aMap.addMarker(options);
         mLocMarker.setTitle(LOCATION_MARKER_FLAG);
+    }
+
+    public void showToast(String s) {
+        Toast.makeText(mContext, s, Toast.LENGTH_SHORT).show();
     }
 
 }
