@@ -1,10 +1,13 @@
 package com.example.a10942.newproject.Activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.amap.api.location.AMapLocation;
@@ -22,9 +25,12 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.example.a10942.newproject.R;
+import com.example.a10942.newproject.Utils.SPUtils;
 import com.example.a10942.newproject.Utils.SensorEventHelper;
+import com.google.zxing.client.android.ScannerActivity;
 
-import static com.example.a10942.newproject.R.id.map;
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class MainActivity extends AppCompatActivity implements LocationSource,
         AMapLocationListener {
@@ -39,7 +45,11 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     private Marker mLocMarker;
     private SensorEventHelper mSensorHelper;
     private Circle mCircle;
+    CircleImageView mian_zxing;
+    private Context mContext;
     public static final String LOCATION_MARKER_FLAG = "mylocation";
+    private SPUtils sputils;
+    boolean str;
     //侧拉界控件
     private LinearLayout header_mian_mypurse, header_mian_myfavorable, header_mian_myrecord, header_mian_shiyong, header_mian_setting;
 
@@ -47,16 +57,25 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mian);
-        mapView = (MapView) findViewById(map);
+        mContext = MainActivity.this;
+        mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         //初始化
         init();
+        findView();
     }
+
 
     /**
      * 初始化
      */
     private void init() {
+        str = sputils.contains(mContext, "userName");
+//        if (str != true) {
+//            Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();
+//            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+//            this.finish();
+//        }
         if (aMap == null) {
             aMap = mapView.getMap();
             setUpMap();
@@ -65,9 +84,44 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         if (mSensorHelper != null) {
             mSensorHelper.registerSensorListener();
         }
-
     }
 
+    /**
+     * 初始化控件
+     */
+    private void findView() {
+        header_mian_mypurse = (LinearLayout) findViewById(R.id.header_mian_mypurse);
+        header_mian_mypurse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            }
+        });
+        mian_zxing = (CircleImageView) findViewById(R.id.mian_zxing);
+        mian_zxing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScannerActivity.startScannerActivity(mContext, 233);
+            }
+        });
+    }
+
+    //回调函数，并处理二维码返回的数据，
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 233 && resultCode == RESULT_OK) {
+            String result = data.getStringExtra("result");
+            Intent intent = new Intent(MainActivity.this, ClockActivity.class);
+            intent.putExtra("Result", result);
+           Log.i("sss", result);
+           startActivity(intent);
+
+            // 关闭当前页面
+            System.exit(0);
+        }
+
+    }
 
     /**
      * 设置一些amap的属性
@@ -79,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         // 设置定位的类型为定位模式 ，可以由定位、跟随或地图根据面向方向旋转几种
         aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
     }
+
 
     /**
      * 生命周期控制

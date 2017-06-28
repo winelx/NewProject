@@ -70,7 +70,6 @@ public class LoginActivity extends AppCompatActivity {
         //用户名
         LoginUsername = (EditText) findViewById(R.id.Login_Username);
 
-
     }
 
     /**
@@ -80,28 +79,22 @@ public class LoginActivity extends AppCompatActivity {
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String passWorld = LoginPassword.getText().toString();
-                final String userName = LoginUsername.getText().toString();
-                if (userName.isEmpty() || passWorld.isEmpty()) {
-                    Toast.makeText(LoginActivity.this, "用户名或密码不能为空", Toast.LENGTH_SHORT).show();
-                    return;
-                } else {
-                    AVUser.logInInBackground(userName, passWorld, new LogInCallback<AVUser>() {
-                        @Override
-                        public void done(AVUser avUser, AVException e) {
-                            if (e == null) {
-                                spUtils.clear(context);
-                                spUtils.put(LoginActivity.this, "username", userName);
-                                spUtils.put(LoginActivity.this, "passWorld", passWorld);
-                                LoginActivity.this.finish();
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-
-                            } else {
-                                Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
+                final String password = LoginPassword.getText().toString();
+                final String username = LoginUsername.getText().toString();
+                AVUser.logInInBackground(username, password, new LogInCallback<AVUser>() {
+                    @Override
+                    public void done(AVUser avUser, AVException e) {
+                        if (e == null) {
+                            spUtils.clear(context);
+                            spUtils.put(context, "userName", username);
+                            spUtils.put(context, "password", password);
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            LoginActivity.this.finish();
+                        } else {
+                            Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
-                    });
-                }
+                    }
+                });
             }
         });
         //忘记密码

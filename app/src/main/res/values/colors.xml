@@ -11,4 +11,5 @@
     <color name="grey">#babbbc</color>
    <color name="black"> #000000</color>
     <color name="red">#f10a0a</color>
+    <color name="editext">#2a2929</color>
 </resources>

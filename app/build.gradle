@@ -46,18 +46,14 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
-    testCompile 'junit:junit:4.12'
-
-    compile ('com.android.support:support-v4:21.0.3')
-
+    compile 'com.android.support:support-v4:21.0.3'
     // LeanCloud 基础包
-    compile ('cn.leancloud.android:avoscloud-sdk:v4.1.0')
-
+    compile 'cn.leancloud.android:avoscloud-sdk:v4.1.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:recyclerview-v7:23.0.0'
     compile 'com.android.support:cardview-v7:23.0.0'
@@ -66,5 +62,5 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     //圆角控件
     compile 'de.hdodenhof:circleimageview:2.1.0'
-
+    compile project(':ZXing-Lib-master')
 }
