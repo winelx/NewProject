@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NewProject</string>
+    <string name="app_name">天天伞</string>
 
 
     <string name="action_settings">Settings</string>
@@ -18,11 +18,14 @@
     <string name="action_wallet">我的钱包</string>
     <string name="action_name">昵称</string>
     <string name="action_approve">已认证</string>
-
+    <string name="agent_addr">地址：%1$s</string>
+    <string name="no_result">对不起，没有搜索到相关数据！</string>
     <string name="alert_dialog_ok">OK</string>
     <string name="alert_dialog_cancel">Cancel</string>
     <string name="storage_description_title">你能允许存储权限吗?</string>
     <string name="storage_description_why_we_need_the_permission">你好,地图缓存需要存储权限。你能允许吗?</string>
     <string name="location_description_title">你能允许定位权限吗?</string>
     <string name="location_description_why_we_need_the_permission">你好,定位功能需要获取位置权限。你能允许吗?</string>
+    <string name="infowindow_navigation">导航</string>
+    <string name="infowindow_call">电话</string>
 </resources>

@@ -64,5 +64,7 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile project(':ZXing-Lib-master')
     compile 'me.weyye.hipermission:library:1.0.7'
-    
+    //高德地图搜索
+    compile 'com.amap.api:search:latest.integration'
+
 }

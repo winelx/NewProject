@@ -34,9 +34,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="16c829f2260b0cbfd7a465d690864ba6">
-            //开发者申请的key</meta-data>
+        android:name="com.amap.api.v2.apikey"
+        android:value="16c829f2260b0cbfd7a465d690864ba6">
+        //开发者申请的key</meta-data>
 
         <activity android:name=".Activity.MainActivity">
             <intent-filter>
@@ -60,6 +60,7 @@
         <activity
             android:name=".Activity.RegisteredActivity"
             android:label="注册"></activity>
+
         <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
         <service android:name="com.amap.api.location.APSService"></service>
     </application>

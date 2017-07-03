@@ -1,86 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <android.support.v4.widget.DrawerLayout
+    android:gravity="center_horizontal" >
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" >
+        <com.amap.api.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true" >
+        </com.amap.api.maps.MapView>
 
-        <RelativeLayout
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/search_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="@dimen/offset_title"
+        android:layout_marginRight="@dimen/offset_title"
+        android:layout_marginStart="@dimen/offset_title"
+        android:layout_marginTop="@dimen/offset_title"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/btn_search"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-            <com.amap.api.maps.MapView
-                android:id="@+id/map"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-
-
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:orientation="vertical">
-
-                <Button
-                    android:id="@+id/basicmap"
-                    android:layout_width="65dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/btn_map_poi"
-                    android:gravity="center"
-                    android:text="标准地图"
-                    android:textColor="@color/black"
-                    android:textSize="12sp" />
-
-                <Button
-                    android:id="@+id/rsmap"
-                    android:layout_width="65dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/btn_map_poi"
-                    android:gravity="center"
-                    android:text="卫星地图"
-                    android:textColor="@color/black"
-                    android:textSize="12sp" />
-
-                <Button
-                    android:id="@+id/nightmap"
-                    android:layout_width="65dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/btn_map_poi"
-                    android:gravity="center"
-                    android:text="夜间模式"
-                    android:textColor="@color/black"
-                    android:textSize="12sp" />
-
-
-            </LinearLayout>
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/button3"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="15dp"
-                android:background="@mipmap/action_backgrounds"
-                android:text="定位" />
-
-
-        </RelativeLayout>
-
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/offlinearrow_tab2_pressed"
+            android:clickable="true"
+            android:gravity="center"
+            android:paddingEnd="12dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingStart="12dp"
+            android:text="搜索"
+            android:textColor="@color/colorwhite"
+            android:textSize="12dp"/>
 
         <LinearLayout
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="left">
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/btn_search"
+            android:layout_toStartOf="@+id/btn_search"
+            android:background="@drawable/search_input_half"
+            android:clickable="true"
+            android:gravity="center_vertical" >
 
-            <include layout="@layout/nav_header_main" />
+
+            <EditText
+                android:id="@+id/input_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableLeft="@drawable/search_input"
+                android:background="@color/transparent"
+                android:hint="请输入搜索关键字"
+                android:textColorHint="@color/darkgrey"
+                android:singleLine="true"
+                android:textColor="@color/grey"
+                android:textSize="14sp" />
         </LinearLayout>
-    </android.support.v4.widget.DrawerLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/poi_detail"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/border_bg"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/poi_name"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:textColor="#5566b8"
+            android:textSize="15sp" />
 
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/poi_address"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/poi_name"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:textColor="#333333"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/poi_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/poi_address"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
+            android:gravity="center_vertical"
+            android:textColor="#333333"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

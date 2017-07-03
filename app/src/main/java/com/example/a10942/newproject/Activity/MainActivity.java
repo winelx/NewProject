@@ -4,10 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -19,6 +24,7 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.Projection;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.Circle;
 import com.amap.api.maps.model.CircleOptions;
@@ -36,7 +42,8 @@ import me.weyye.hipermission.PermissionCallback;
 
 
 public class MainActivity extends AppCompatActivity implements LocationSource,
-        AMapLocationListener {
+        AMapLocationListener, AMap.OnMarkerClickListener,
+        AMap.OnMapClickListener, AMap.OnInfoWindowClickListener {
     AMap aMap;
     MapView mapView;
     private OnLocationChangedListener mListener;
@@ -44,18 +51,17 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     private AMapLocationClientOption mLocationOption;
     private static final int STROKE_COLOR = Color.argb(180, 3, 145, 255);
     private static final int FILL_COLOR = Color.argb(10, 0, 0, 180);
-    private static final int LOCATION_PERMISSION_CODE = 100;
-    private static final int STORAGE_PERMISSION_CODE = 101;
     private boolean mFirstFix = false;
     private Marker mLocMarker;
     private SensorEventHelper mSensorHelper;
     private Circle mCircle;
     CircleImageView mian_zxing;
     private Context mContext;
-    public static final String LOCATION_MARKER_FLAG = "mylocation";
+    public static final String LOCATION_MARKER_FLAG = "你当前位置";
     private SPUtils sputils;
     boolean str;
     private String TAG = "MianActivity";
+
     //侧拉界控件
     private LinearLayout header_mian_mypurse, header_mian_myfavorable, header_mian_myrecord, header_mian_shiyong, header_mian_setting;
 
@@ -133,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
                 ScannerActivity.startScannerActivity(mContext, 233);
             }
         });
+
     }
 
     //回调函数，并处理二维码返回的数据，
@@ -143,24 +150,44 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
             String result = data.getStringExtra("result");
             Intent intent = new Intent(MainActivity.this, ClockActivity.class);
             intent.putExtra("Result", result);
-            Log.i("sss", result);
             startActivity(intent);
-
             // 关闭当前页面
             System.exit(0);
         }
 
     }
 
+    private LatLng latlng = new LatLng(26.566398, 106.681249);
+    private LatLng latlng1 = new LatLng(26.570502106, 106.685129);
+
     /**
      * 设置一些amap的属性
      */
     private void setUpMap() {
+        aMap.setOnMarkerClickListener(this);// 设置点击marker事件监听器
+        aMap.setOnMapClickListener(this);//设置点图的点击事件
+        addMarkersToMap(latlng);// 往地图上添加marker
+        addMarkersToMap(latlng1);
         aMap.setLocationSource(this);// 设置定位监听
         aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
         aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
         // 设置定位的类型为定位模式 ，可以由定位、跟随或地图根据面向方向旋转几种
         aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
+    }
+
+    /**
+     * 在地图上添加marker
+     */
+    private void addMarkersToMap(LatLng latLng) {
+        options = new MarkerOptions();
+        options = new MarkerOptions().icon(BitmapDescriptorFactory
+                .defaultMarker(R.mipmap.action_location))
+                .position(latLng)
+                .title("标题")
+                .draggable(true);
+        mLocMarker = aMap.addMarker(options);
+        mLocMarker.hideInfoWindow();
+
     }
 
 
@@ -187,6 +214,16 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         mapView.onPause();
         deactivate();
         mFirstFix = false;
+        mLocMarker.destroy();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mapView.onPause();
+        deactivate();
+        mFirstFix = false;
+        mLocMarker.destroy();
     }
 
     /**
@@ -197,8 +234,6 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         if (mListener != null && amapLocation != null) {
             if (amapLocation != null
                     && amapLocation.getErrorCode() == 0) {
-
-
                 LatLng location = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
                 if (!mFirstFix) {
                     mFirstFix = true;
@@ -210,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
                     mCircle.setCenter(location);
                     mCircle.setRadius(amapLocation.getAccuracy());
                     mLocMarker.setPosition(location);
-                    aMap.moveCamera(CameraUpdateFactory.changeLatLng(location));
+                    //   aMap.moveCamera(CameraUpdateFactory.changeLatLng(location));
                 }
             } else {
                 String errText = "定位失败," + amapLocation.getErrorCode() + ": " + amapLocation.getErrorInfo();
@@ -266,11 +301,10 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         mCircle = aMap.addCircle(options);
     }
 
+    MarkerOptions options;
+
     private void addMarker(LatLng latlng) {
-        if (mLocMarker != null) {
-            return;
-        }
-        MarkerOptions options = new MarkerOptions();
+        options = new MarkerOptions();
         options.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(this.getResources(),
                 R.mipmap.navi_map_gps_locked)));
         options.anchor(0.5f, 0.5f);
@@ -283,4 +317,63 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         Toast.makeText(mContext, s, Toast.LENGTH_SHORT).show();
     }
 
+    //提示框
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+
+//        ToastUtil.show(this, "你点击了infoWindow窗口" + marker.getTitle());
+//        ToastUtil.show(MainActivity.this, "当前地图可视区域内Marker数量:"
+//                + aMap.getMapScreenMarkers().size());
+    }
+
+
+    //地图点击事件
+    @Override
+    public void onMapClick(LatLng latLng) {
+        mLocMarker.hideInfoWindow();
+    }
+
+    //marker点击事件
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        if (aMap != null) {
+            jumpPoint(marker);
+        }
+        Toast.makeText(MainActivity.this, "您点击了Marker" + mLocMarker.getId(), Toast.LENGTH_LONG).show();
+//        marker.hideInfoWindow();
+        marker.showInfoWindow();
+        return true;
+    }
+
+    /**
+     * marker点击时跳动一下
+     */
+    public void jumpPoint(final Marker marker) {
+        final Handler handler = new Handler();
+        final long start = SystemClock.uptimeMillis();
+        Projection proj = aMap.getProjection();
+        final LatLng markerLatlng = marker.getPosition();
+        Point markerPoint = proj.toScreenLocation(markerLatlng);
+        markerPoint.offset(0, -100);
+        final LatLng startLatLng = proj.fromScreenLocation(markerPoint);
+        final long duration = 1500;
+
+        final Interpolator interpolator = new BounceInterpolator();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                long elapsed = SystemClock.uptimeMillis() - start;
+                float t = interpolator.getInterpolation((float) elapsed
+                        / duration);
+                double lng = t * markerLatlng.longitude + (1 - t)
+                        * startLatLng.longitude;
+                double lat = t * markerLatlng.latitude + (1 - t)
+                        * startLatLng.latitude;
+                marker.setPosition(new LatLng(lat, lng));
+                if (t < 1.0) {
+                    handler.postDelayed(this, 16);
+                }
+            }
+        });
+    }
 }
