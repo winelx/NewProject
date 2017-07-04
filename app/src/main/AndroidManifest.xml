@@ -10,22 +10,23 @@
     <!-- 基础模块（必须加入以下声明）START -->
     <uses-permission android:name="android.permission.READ_LOGS" />
 
-    <!--允许程序打开网络套接字-->
+    <!-- 允许程序打开网络套接字 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!--允许程序设置内置sd卡的写权限-->
+    <!-- 允许程序设置内置sd卡的写权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--允许程序获取网络状态-->
+    <!-- 允许程序获取网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!--允许程序访问WiFi网络信息-->
+    <!-- 允许程序访问WiFi网络信息 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!--允许程序读写手机状态和身份-->
+    <!-- 允许程序读写手机状态和身份 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!--允许程序访问CellID或WiFi热点来获取粗略的位置-->
+    <!-- 允许程序访问CellID或WiFi热点来获取粗略的位置 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!--用于进行网络定位-->
+    <!-- 用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!--用于访问GPS定位-->
+    <!-- 用于访问GPS定位 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:name=".GettingStartedApp"
         android:allowBackup="true"
@@ -34,9 +35,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
-        android:name="com.amap.api.v2.apikey"
-        android:value="16c829f2260b0cbfd7a465d690864ba6">
-        //开发者申请的key</meta-data>
+            android:name="com.amap.api.v2.apikey"
+            android:value="16c829f2260b0cbfd7a465d690864ba6">
+            //开发者申请的key</meta-data>
 
         <activity android:name=".Activity.MainActivity">
             <intent-filter>
@@ -47,22 +48,23 @@
         </activity>
         <activity
             android:name=".Activity.ClockActivity"
-            android:label="借伞计时"></activity>
+            android:label="借伞计时" />
         <activity
             android:name=".Activity.ForgetActivity"
-            android:label="忘记密码"></activity>
+            android:label="忘记密码" />
         <activity
             android:name=".Activity.implosionActivity"
-            android:label="举报"></activity>
+            android:label="举报" />
         <activity
             android:name=".Activity.LoginActivity"
-            android:label="登陆"></activity>
+            android:label="登陆" />
         <activity
             android:name=".Activity.RegisteredActivity"
-            android:label="注册"></activity>
+            android:label="注册" />
 
         <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
-        <service android:name="com.amap.api.location.APSService"></service>
+        <service android:name="com.amap.api.location.APSService" />
+
     </application>
 
 </manifest>

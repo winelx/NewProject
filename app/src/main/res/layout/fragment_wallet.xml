@@ -41,12 +41,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_weight="1"
+                android:textColor="@color/black"
                 android:text="消费金额"
                 android:textSize="@dimen/action_editext" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:layout_weight="1"
                 android:text="20.00元"
                 android:textSize="@dimen/action_editext" />
@@ -63,12 +65,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_weight="1"
+                android:textColor="@color/black"
                 android:text="消费金额"
                 android:textSize="@dimen/action_editext" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:layout_weight="1"
                 android:text="20.00元"
                 android:textSize="@dimen/action_editext" />
@@ -92,6 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
+                android:textColor="@color/black"
                 android:layout_weight="1"
                 android:text="消费金额"
                 android:textSize="@dimen/action_editext" />
@@ -99,6 +104,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:layout_weight="1"
                 android:text="20.00元"
                 android:textSize="@dimen/action_editext" />
@@ -116,6 +122,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
+                android:textColor="@color/black"
                 android:layout_weight="1"
                 android:text="消费金额"
                 android:textSize="@dimen/action_editext" />
@@ -123,6 +130,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:layout_weight="1"
                 android:text="20.00元"
                 android:textSize="@dimen/action_editext" />

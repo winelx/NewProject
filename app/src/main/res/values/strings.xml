@@ -28,4 +28,8 @@
     <string name="location_description_why_we_need_the_permission">你好,定位功能需要获取位置权限。你能允许吗?</string>
     <string name="infowindow_navigation">导航</string>
     <string name="infowindow_call">电话</string>
+    <string name="title_activity_index">IndexActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

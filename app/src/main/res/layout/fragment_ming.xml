@@ -34,6 +34,7 @@
         android:layout_marginRight="75dp"
         android:layout_marginTop="30dp"
         android:background="@drawable/button_rounded_background_blue"
+        android:gravity="center"
         android:text="充值"
         android:textColor="@color/colorwhite"
         android:textSize="@dimen/action_name" />
