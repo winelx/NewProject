@@ -164,7 +164,7 @@ public class RegisteredActivity extends Activity {
                     spUtils.clear(context);
                     spUtils.put(context, "userName", usrname);
                     spUtils.put(context, "password", password);
-                    startActivity(new Intent(RegisteredActivity.this, MainActivity.class));
+                    startActivity(new Intent(RegisteredActivity.this, IndexActivity.class));
                     toast("注册成功");
                 } else {
                     // 失败的原因可能有多种，常见的是用户名已经存在。

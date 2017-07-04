@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                             spUtils.clear(context);
                             spUtils.put(context, "userName", username);
                             spUtils.put(context, "password", password);
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            startActivity(new Intent(LoginActivity.this, IndexActivity.class));
                             LoginActivity.this.finish();
                         } else {
                             Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();

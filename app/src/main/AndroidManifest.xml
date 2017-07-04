@@ -39,7 +39,7 @@
             android:value="16c829f2260b0cbfd7a465d690864ba6">
             //开发者申请的key</meta-data>
 
-        <activity android:name=".Activity.MainActivity">
+        <activity android:name=".Activity.IndexActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

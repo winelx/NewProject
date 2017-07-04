@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_camera"
+        android:icon="@mipmap/action_wallet"
+        android:title="@string/action_wallet" />
+    <item
+        android:id="@+id/nav_gallery"
+        android:icon="@mipmap/action_preferential"
+        android:title="@string/action_preferential" />
+    <item
+        android:id="@+id/nav_slideshow"
+        android:icon="@mipmap/action_parasol"
+        android:title="@string/action_record" />
+    <item
+        android:id="@+id/nav_share"
+        android:icon="@mipmap/action_book"
+        android:title="@string/action_manual" />
+    <item
+        android:id="@+id/nav_send"
+        android:icon="@mipmap/action_settings"
+        android:title="@string/action_setting" />
+    <item
+        android:id="@+id/nav_exit"
+        android:icon="@mipmap/action_exit"
+        android:title="@string/action_exit" />
+    
+</menu>

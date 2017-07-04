@@ -1,9 +1,18 @@
 package com.example.a10942.newproject.Utils;
 
 
+import android.graphics.Point;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.text.TextUtils;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.Interpolator;
 
 import com.amap.api.location.AMapLocation;
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.Projection;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.Marker;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -112,4 +121,6 @@ public class Utils {
         }
         return sdf == null ? "NULL" : sdf.format(l);
     }
+        AMap aMap;
+
 }
