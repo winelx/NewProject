@@ -46,6 +46,7 @@
     <integer name="scanner_line_speed_default">5</integer>
 
     <color name="scanner_image_color_default">#fffc6e0f</color>
+    <color name="back">#050505</color>
     <color name="scanner_bg_default">#64000000</color>
     <color name="scanner_bg_end_default">#64000000</color>
     <color name="scanner_point_color_default">#BBfc6e0f</color>
@@ -143,6 +144,18 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">#FFffffff</item>
         <item name="android:text">将二维码/条形码放入框内, 即可自动扫描</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginBottom">20dip</item>
+        <item name="android:padding">8dip</item>
+        <item name="android:background">@drawable/scanner_textview_bg</item>
+    </style>
+
+    <!-- 文字的样式 -->
+    <style name="Widget.TextView.Scanners" parent="@android:style/Widget.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#FFffffff</item>
+        <item name="android:text">手动输入机器码</item>
         <item name="android:textSize">16sp</item>
         <item name="android:layout_marginBottom">20dip</item>
         <item name="android:padding">8dip</item>

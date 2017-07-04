@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ import com.example.a10942.newproject.R;
 import com.example.a10942.newproject.Utils.SPUtils;
 import com.example.a10942.newproject.Utils.SensorEventHelper;
 import com.example.a10942.newproject.Utils.Utils;
+import com.google.zxing.client.android.ScannerActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.weyye.hipermission.HiPermission;
@@ -47,8 +49,7 @@ import me.weyye.hipermission.PermissionCallback;
 
 public class IndexActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        LocationSource, AMapLocationListener, AMap.OnMarkerClickListener,
-        AMap.OnMapClickListener {
+        LocationSource, AMapLocationListener, AMap.OnMarkerClickListener {
     private MapView mapView;//地图
     private AMap aMap;
     private CircleImageView mian_zxing;//借伞
@@ -77,7 +78,6 @@ public class IndexActivity extends AppCompatActivity
         mContext = IndexActivity.this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -90,6 +90,18 @@ public class IndexActivity extends AppCompatActivity
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         init();
+
+        findView();
+    }
+
+    private void findView() {
+        mian_zxing = (CircleImageView) findViewById(R.id.mian_zxing);
+        mian_zxing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScannerActivity.startScannerActivity(mContext, 233);
+            }
+        });
     }
 
     //界面初始化
@@ -139,15 +151,15 @@ public class IndexActivity extends AppCompatActivity
      */
     private void setUpMap() {
         aMap.setOnMarkerClickListener(this);// 设置点击marker事件监听器
-        aMap.setOnMapClickListener(this);//设置点图的点击事件
         aMap.setLocationSource(this);// 设置定位监听
         aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
         aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
         // 设置定位的类型为定位模式 ，可以由定位、跟随或地图根据面向方向旋转几种
         aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
+
     }
 
-
+    //抽屉控件
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -266,26 +278,11 @@ public class IndexActivity extends AppCompatActivity
             Utils utils = new Utils();
             jumpPoint(marker);
         }
-        marker.showInfoWindow();
+        Toast.makeText(IndexActivity.this, "您点击了Marker" + marker.getId(), Toast.LENGTH_LONG).show();
+//        marker.showInfoWindow();
         return false;
     }
 
-
-    /**
-     * 在地图上添加marker
-     */
-    private void addMarkersToMap(LatLng latLng) {
-        // 设置当前地图显示为当前位置
-        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 19));
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("伞的位置");
-        markerOptions.visible(true);
-        BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap
-                (BitmapFactory.decodeResource(getResources(), R.mipmap.action_location));
-        markerOptions.icon(bitmapDescriptor);
-        aMap.addMarker(markerOptions);
-    }
 
     /**
      * 定位成功后回调函数
@@ -327,17 +324,53 @@ public class IndexActivity extends AppCompatActivity
         mCircle = aMap.addCircle(options);
     }
 
+    /**
+     * 定位的marker
+     *
+     * @param latlng
+     */
     private void addMarker(LatLng latlng) {
-        options = new MarkerOptions();
-        options.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(this.getResources(),
-                R.mipmap.navi_map_gps_locked)));
-        options.anchor(0.5f, 0.5f);
-        options.position(latlng);
-        mLocMarker = aMap.addMarker(options);
-        mLocMarker.setTitle(LOCATION_MARKER_FLAG);
+//        options = new MarkerOptions();
+//        options.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(this.getResources(),
+//                R.mipmap.navi_map_gps_locked)));
+//        options.anchor(0.4f, 0.4f);
+//        options.position(latlng);
+//        mLocMarker = aMap.addMarker(options);
+//        mLocMarker.setTitle(LOCATION_MARKER_FLAG);
+
+        // 设置当前地图显示为当前位置
+        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 19));
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latlng);
+        markerOptions.anchor(0.2f, 0.2f);
+        markerOptions.title(LOCATION_MARKER_FLAG);
+        markerOptions.visible(true);
+        BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap
+                (BitmapFactory.decodeResource(getResources(), R.mipmap.navi_map_gps_locked));
+        markerOptions.icon(bitmapDescriptor);
+        aMap.addMarker(markerOptions);
     }
 
-    //回调函数，并处理二维码返回的数据，
+    /**
+     * 在地图上添加marker
+     */
+    private void addMarkersToMap(LatLng latLng) {
+        // 设置当前地图显示为当前位置
+        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 19));
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        markerOptions.anchor(0.2f, 0.2f);
+        markerOptions.title("伞的位置");
+        markerOptions.visible(true);
+        BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap
+                (BitmapFactory.decodeResource(getResources(), R.mipmap.action_location));
+        markerOptions.icon(bitmapDescriptor);
+        aMap.addMarker(markerOptions);
+    }
+
+    /**
+     * 回调函数，并处理二维码返回的数据，
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
