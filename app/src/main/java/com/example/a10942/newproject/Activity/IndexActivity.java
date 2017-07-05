@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -37,11 +38,18 @@ import com.amap.api.maps.model.CircleOptions;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.FindCallback;
 import com.example.a10942.newproject.R;
 import com.example.a10942.newproject.Utils.SPUtils;
 import com.example.a10942.newproject.Utils.SensorEventHelper;
 import com.example.a10942.newproject.Utils.Utils;
 import com.google.zxing.client.android.ScannerActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.weyye.hipermission.HiPermission;
@@ -60,16 +68,63 @@ public class IndexActivity extends AppCompatActivity
     private SensorEventHelper mSensorHelper;
     private MarkerOptions options;
     private Marker mLocMarker;
-    private LatLng latlng = new LatLng(26.566398, 106.681249);
-    private LatLng latlng1 = new LatLng(26.570502106, 106.685129);
     private LocationSource.OnLocationChangedListener mListener;
     private AMapLocationClient mlocationClient;
     private boolean mFirstFix = false;
     private AMapLocationClientOption mLocationOption;
     private Circle mCircle;
+    private List<AVObject> mList = new ArrayList<>();
     private static final int STROKE_COLOR = Color.argb(180, 3, 145, 255);
     private static final int FILL_COLOR = Color.argb(10, 0, 0, 180);
     public static final String LOCATION_MARKER_FLAG = "你当前位置";
+    String address; //地址
+    String LatLng_latitude;//纬度  "106.6858290000",
+    String LatLng_longitude;//经度  26.5623960000"
+
+    // "address": "贵州省贵阳市南明区花果园社区服务中心花果园大街花果园C区",
+    AVQuery<AVObject> avQuery;
+    List<Object> latlnged;
+    //uiHandler在主线程中创建，所以自动绑定主线程
+    private Handler uiHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    latlnged = new ArrayList<Object>();
+                    avQuery = new AVQuery<>("LatLng");
+                    avQuery.orderByDescending("createdAt");
+                    avQuery.include("address");
+                    avQuery.include("LatLng_latitude");
+                    avQuery.include("LatLng_longitude");
+                    avQuery.findInBackground(new FindCallback<AVObject>() {
+                        @Override
+                        public void done(List<AVObject> list, AVException e) {
+                            if (e == null) {
+                                mList.addAll(list);
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        for (int i = 0; i < mList.size(); i++) {
+                                            address = mList.get(i).getString("address");
+                                            LatLng_latitude = mList.get(i).getString("LatLng_latitude");
+                                            LatLng_longitude = mList.get(i).getString("LatLng_longitude");
+                                            double latitudes = Double.valueOf(LatLng_latitude);
+                                            double longitudes = Double.valueOf(LatLng_longitude);
+                                            addMarkersToMap(address, longitudes, latitudes);
+                                        }
+                                    }
+                                }).start();
+
+
+                            } else {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +144,7 @@ public class IndexActivity extends AppCompatActivity
         //地图初始化
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
+
         init();
 
         findView();
@@ -106,40 +162,43 @@ public class IndexActivity extends AppCompatActivity
 
     //界面初始化
     private void init() {
-        //权限申请
-        HiPermission.create(mContext)
-                .checkMutiPermission(new PermissionCallback() {
-                    @Override
-                    public void onClose() {
-                        Log.i(TAG, "onClose");
-                        showToast("用户关闭权限申请");
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        showToast("所有权限申请完成");
-                    }
-
-                    @Override
-                    public void onDeny(String permisson, int position) {
-                        Log.i(TAG, "onDeny");
-                    }
-
-                    @Override
-                    public void onGuarantee(String permisson, int position) {
-                        Log.i(TAG, "onGuarantee");
-                    }
-                });
         str = sputils.contains(mContext, "userName");
         if (str != true) {
             Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(IndexActivity.this, LoginActivity.class));
             this.finish();
+        } else {
+            //权限申请
+            HiPermission.create(mContext)
+                    .checkMutiPermission(new PermissionCallback() {
+                        @Override
+                        public void onClose() {
+                            Log.i(TAG, "onClose");
+                            showToast("用户关闭权限申请");
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            showToast("所有权限申请完成");
+
+                        }
+
+                        @Override
+                        public void onDeny(String permisson, int position) {
+                            Log.i(TAG, "onDeny");
+                        }
+
+                        @Override
+                        public void onGuarantee(String permisson, int position) {
+                            Log.i(TAG, "onGuarantee");
+                        }
+                    });
         }
         if (aMap == null) {
             aMap = mapView.getMap();
             setUpMap();
         }
+
         mSensorHelper = new SensorEventHelper(this);
         if (mSensorHelper != null) {
             mSensorHelper.registerSensorListener();
@@ -249,7 +308,9 @@ public class IndexActivity extends AppCompatActivity
             // 在定位结束后，在合适的生命周期调用onDestroy()方法
             // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
             mlocationClient.startLocation();
-            addMarkersToMap(latlng);
+//            addMarkersToMap(latlng);
+
+
         }
     }
 
@@ -278,7 +339,6 @@ public class IndexActivity extends AppCompatActivity
             Utils utils = new Utils();
             jumpPoint(marker);
         }
-        Toast.makeText(IndexActivity.this, "您点击了Marker" + marker.getId(), Toast.LENGTH_LONG).show();
 //        marker.showInfoWindow();
         return false;
     }
@@ -303,8 +363,11 @@ public class IndexActivity extends AppCompatActivity
                     mCircle.setCenter(location);
                     mCircle.setRadius(amapLocation.getAccuracy());
                     mLocMarker.setPosition(location);
-                    //   aMap.moveCamera(CameraUpdateFactory.changeLatLng(location));//定位成功后居中
+                    aMap.moveCamera(CameraUpdateFactory.changeLatLng(location));//定位成功后居中
                 }
+                Message msg = new Message();
+                msg.what = 1;
+                uiHandler.sendMessage(msg);
             } else {
                 String errText = "定位失败," + amapLocation.getErrorCode() + ": " + amapLocation.getErrorInfo();
                 Log.e("AmapErr", errText);
@@ -330,19 +393,12 @@ public class IndexActivity extends AppCompatActivity
      * @param latlng
      */
     private void addMarker(LatLng latlng) {
-//        options = new MarkerOptions();
-//        options.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(this.getResources(),
-//                R.mipmap.navi_map_gps_locked)));
-//        options.anchor(0.4f, 0.4f);
-//        options.position(latlng);
-//        mLocMarker = aMap.addMarker(options);
-//        mLocMarker.setTitle(LOCATION_MARKER_FLAG);
 
         // 设置当前地图显示为当前位置
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 19));
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latlng);
-        markerOptions.anchor(0.2f, 0.2f);
+        markerOptions.anchor(0.5f, 0.5f);
         markerOptions.title(LOCATION_MARKER_FLAG);
         markerOptions.visible(true);
         BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap
@@ -354,18 +410,20 @@ public class IndexActivity extends AppCompatActivity
     /**
      * 在地图上添加marker
      */
-    private void addMarkersToMap(LatLng latLng) {
+    private void addMarkersToMap(String str, double latitude, double longitude) {
         // 设置当前地图显示为当前位置
-        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 19));
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.anchor(0.2f, 0.2f);
-        markerOptions.title("伞的位置");
-        markerOptions.visible(true);
-        BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap
-                (BitmapFactory.decodeResource(getResources(), R.mipmap.action_location));
-        markerOptions.icon(bitmapDescriptor);
-        aMap.addMarker(markerOptions);
+        LatLng lanlng = new LatLng(latitude, longitude);
+//        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lanlng, 19));
+//        MarkerOptions markerOptions = new MarkerOptions();
+//        markerOptions.position(lanlng);
+//        markerOptions.anchor(0.5f, 0.5f);
+//        markerOptions.title(str);
+//        markerOptions.visible(true);
+//        BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap
+//                (BitmapFactory.decodeResource(getResources(), R.mipmap.action_location));
+//        markerOptions.icon(bitmapDescriptor);
+//        aMap.addMarker(markerOptions);
+        final Marker marker = aMap.addMarker(new MarkerOptions().position(lanlng).title(str));
     }
 
     /**
