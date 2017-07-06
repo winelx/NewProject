@@ -14,7 +14,7 @@
     <string name="action_exit">退出</string>
     <string name="action_manual">使用指南</string>
     <string name="action_record">借伞记录</string>
-    <string name="action_preferential">我的优惠</string>
+    <string name="action_preferential">邀请朋友</string>
     <string name="action_wallet">我的钱包</string>
     <string name="action_name">昵称</string>
     <string name="action_approve">已认证</string>

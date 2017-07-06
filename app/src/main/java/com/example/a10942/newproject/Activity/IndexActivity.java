@@ -1,6 +1,8 @@
 package com.example.a10942.newproject.Activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -43,6 +45,7 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.example.a10942.newproject.R;
 import com.example.a10942.newproject.Utils.ExitApplication;
@@ -139,7 +142,7 @@ public class IndexActivity extends AppCompatActivity
         mContext = IndexActivity.this;
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
-        ExitApplication.getInstance().addActivity(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -163,15 +166,7 @@ public class IndexActivity extends AppCompatActivity
                 ScannerActivity.startScannerActivity(mContext, 233);
             }
         });
-        //注册
-        Login_registered = (TextView) findViewById(R.id.Login_registered);
-//        Login_registered.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(IndexActivity.this, RegisteredActivity.class));
-//            }
-//        });
-        Login_Forgot_password = (TextView) findViewById(R.id.Login_Forgot_password);
+
 
     }
 
@@ -244,6 +239,7 @@ public class IndexActivity extends AppCompatActivity
         }
     }
 
+    //抽屉界面的按钮点击事件
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -251,7 +247,7 @@ public class IndexActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -261,6 +257,28 @@ public class IndexActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
         } else if (id == R.id.nav_exit) {
+            new AlertDialog.Builder(IndexActivity.this).setTitle("提示")//设置对话框标题
+
+                    .setMessage("你确定退出当前账号吗？")//设置显示的内容
+
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加确定按钮
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
+                            AVUser.logOut();// 清除缓存用户对象
+                            AVUser currentUser = AVUser.getCurrentUser();// 现在的 currentUser 是 null 了
+                            sputils.clear(mContext);
+                            startActivity(new Intent(IndexActivity.this, LoginActivity.class));
+                            ExitApplication.getInstance().exit();
+                        }
+                    }).setNegativeButton("返回", new DialogInterface.OnClickListener() {//添加返回按钮
+                @Override
+
+                public void onClick(DialogInterface dialog, int which) {//响应事件
+                    // TODO Auto-generated method stub
+                    Log.i("alertdialog", " 请保存数据！");
+                }
+
+            }).show();//在按键响应事件中显示此对话框
 
         }
 
@@ -410,7 +428,7 @@ public class IndexActivity extends AppCompatActivity
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 19));
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latlng);
-        markerOptions.anchor(0.2f, 0.2f);
+        markerOptions.anchor(0.5f, 0.5f);
         markerOptions.title(LOCATION_MARKER_FLAG);
         markerOptions.visible(true);
         BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap
@@ -426,20 +444,21 @@ public class IndexActivity extends AppCompatActivity
 //        // 设置当前地图显示为当前位置
         LatLng lanlng = new LatLng(latitude, longitude);
         /**
-        final Marker marker = aMap.addMarker(new MarkerOptions().position(lanlng).title(str));
-        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lanlng, 19));
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(lanlng);
-        markerOptions.anchor(0.5f, 0.5f);
-        markerOptions.title(str);
-        markerOptions.visible(true);
-        BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap
-                (BitmapFactory.decodeResource(getResources(), R.mipmap.action_location));
-        markerOptions.icon(bitmapDescriptor);
-        aMap.addMarker(markerOptions);
+         final Marker marker = aMap.addMarker(new MarkerOptions().position(lanlng).title(str));
+         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lanlng, 19));
+         MarkerOptions markerOptions = new MarkerOptions();
+         markerOptions.position(lanlng);
+         markerOptions.anchor(0.5f, 0.5f);
+         markerOptions.title(str);
+         markerOptions.visible(true);
+         BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap
+         (BitmapFactory.decodeResource(getResources(), R.mipmap.action_location));
+         markerOptions.icon(bitmapDescriptor);
+         aMap.addMarker(markerOptions);
          */
         final Marker marker = aMap.addMarker(new MarkerOptions().position(lanlng).title(str));
     }
+
     /**
      * 回调函数，并处理二维码返回的数据，
      */
@@ -495,7 +514,7 @@ public class IndexActivity extends AppCompatActivity
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            if ((System.currentTimeMillis() - exitTime) > 2000) {
+            if ((System.currentTimeMillis() - exitTime) > 3000) {
                 Toast.makeText(IndexActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
             } else {
