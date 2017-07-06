@@ -24,8 +24,8 @@
     <string name="storage_description_why_we_need_the_permission">你好,地图缓存需要存储权限。你能允许吗?</string>
     <string name="location_description_title">你能允许定位权限吗?</string>
     <string name="location_description_why_we_need_the_permission">你好,定位功能需要获取位置权限。你能允许吗?</string>
-
-
+    <string name="User_agreement">我已详细阅读并同意</string>
+    <string name="User_agreement2">天天雨伞用户协议</string>
     <string name="navigation_drawer_open">打开抽屉</string>
     <string name="navigation_drawer_close">关闭抽屉</string>
     <string name="title_activity_index">IndexActivity</string>

@@ -39,6 +39,7 @@ public class RegisteredActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registered);
         context = RegisteredActivity.this;
+
         /**
          * 初始化界面
          */
