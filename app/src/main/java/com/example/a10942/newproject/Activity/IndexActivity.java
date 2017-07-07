@@ -138,13 +138,14 @@ public class IndexActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
         //将该Activity添加到ExitApplication实例中，
-
+        ExitApplication.getInstance().addActivity(this);
         mContext = IndexActivity.this;
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -247,15 +248,20 @@ public class IndexActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-
+            //我的钱包
+            startActivity(new Intent(IndexActivity.this, WalletActivity.class));
         } else if (id == R.id.nav_gallery) {
-
+            //邀请朋友
+           startActivity(new Intent(IndexActivity.this, FriendActivity.class));
         } else if (id == R.id.nav_slideshow) {
-
+            //借伞记录
+            startActivity(new Intent(IndexActivity.this, RecordActivity.class));
         } else if (id == R.id.nav_share) {
-
+            //使用指南
+            startActivity(new Intent(IndexActivity.this, SettingActivity.class));
         } else if (id == R.id.nav_send) {
-
+            //设置
+            startActivity(new Intent(IndexActivity.this, SettingActivity.class));
         } else if (id == R.id.nav_exit) {
             new AlertDialog.Builder(IndexActivity.this).setTitle("提示")//设置对话框标题
 
@@ -443,19 +449,7 @@ public class IndexActivity extends AppCompatActivity
     private void addMarkersToMap(String str, double latitude, double longitude) {
 //        // 设置当前地图显示为当前位置
         LatLng lanlng = new LatLng(latitude, longitude);
-        /**
-         final Marker marker = aMap.addMarker(new MarkerOptions().position(lanlng).title(str));
-         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lanlng, 19));
-         MarkerOptions markerOptions = new MarkerOptions();
-         markerOptions.position(lanlng);
-         markerOptions.anchor(0.5f, 0.5f);
-         markerOptions.title(str);
-         markerOptions.visible(true);
-         BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap
-         (BitmapFactory.decodeResource(getResources(), R.mipmap.action_location));
-         markerOptions.icon(bitmapDescriptor);
-         aMap.addMarker(markerOptions);
-         */
+
         final Marker marker = aMap.addMarker(new MarkerOptions().position(lanlng).title(str));
     }
 

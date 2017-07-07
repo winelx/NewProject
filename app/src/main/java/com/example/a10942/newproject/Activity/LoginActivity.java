@@ -15,6 +15,7 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
 import com.example.a10942.newproject.R;
+import com.example.a10942.newproject.Utils.ExitApplication;
 import com.example.a10942.newproject.Utils.SPUtils;
 
 
@@ -37,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ExitApplication.getInstance().addActivity(this);
         //初始化
         init();
         //查找id

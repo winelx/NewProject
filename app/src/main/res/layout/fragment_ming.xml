@@ -5,8 +5,34 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/colorblue">
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="钱包"
+            android:textColor="@color/colorwhite"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/ming_back"
+            android:layout_width="40dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="10dp"
+            android:src="@mipmap/back" />
+    </RelativeLayout>
+
     <ImageView
-        android:id="@+id/mine_w"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="70dp"
@@ -28,6 +54,7 @@
         android:textSize="@dimen/activity_vertical_margin" />
 
     <Button
+        android:id="@+id/zhifubo"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginLeft="75dp"

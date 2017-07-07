@@ -39,7 +39,10 @@
             android:value="16c829f2260b0cbfd7a465d690864ba6">
             //开发者申请的key</meta-data>
 
-        <activity android:name=".Activity.IndexActivity">
+        <activity
+            android:name=".Activity.IndexActivity"
+            android:launchMode="singleTop">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,19 +51,41 @@
         </activity>
         <activity
             android:name=".Activity.ClockActivity"
-            android:label="借伞计时" />
+            android:label="借伞计时"
+            android:launchMode="singleTop" />
         <activity
             android:name=".Activity.ForgetActivity"
-            android:label="忘记密码" />
+            android:label="忘记密码"
+            android:launchMode="singleTop" />
         <activity
             android:name=".Activity.implosionActivity"
-            android:label="举报" />
+            android:label="举报"
+            android:launchMode="singleTop" />
         <activity
             android:name=".Activity.LoginActivity"
-            android:label="登陆" />
+            android:label="登陆"
+            android:launchMode="singleTop" />
         <activity
             android:name=".Activity.RegisteredActivity"
-            android:label="注册" />
+            android:label="注册"
+            android:launchMode="singleTop" />
+
+        <activity
+            android:name=".Activity.WalletActivity"
+            android:label="我的钱包"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".Activity.SettingActivity"
+            android:label="设置"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".Activity.RecordActivity"
+            android:label="记录"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".Activity.FriendActivity"
+            android:label="邀请"
+            android:launchMode="singleTop" />
 
         <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
         <service android:name="com.amap.api.location.APSService" />

@@ -45,6 +45,7 @@ public class RegisteredActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registered);
+        ExitApplication.getInstance().addActivity(this);
         context = RegisteredActivity.this;
 
         /**
