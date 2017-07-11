@@ -61,6 +61,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import me.weyye.hipermission.HiPermission;
 import me.weyye.hipermission.PermissionCallback;
 
+//首页
 public class IndexActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         LocationSource, AMapLocationListener, AMap.OnMarkerClickListener {
@@ -142,11 +143,10 @@ public class IndexActivity extends AppCompatActivity
         mContext = IndexActivity.this;
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //打开抽屉的
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -252,7 +252,7 @@ public class IndexActivity extends AppCompatActivity
             startActivity(new Intent(IndexActivity.this, WalletActivity.class));
         } else if (id == R.id.nav_gallery) {
             //邀请朋友
-           startActivity(new Intent(IndexActivity.this, FriendActivity.class));
+            startActivity(new Intent(IndexActivity.this, FriendActivity.class));
         } else if (id == R.id.nav_slideshow) {
             //借伞记录
             startActivity(new Intent(IndexActivity.this, RecordActivity.class));

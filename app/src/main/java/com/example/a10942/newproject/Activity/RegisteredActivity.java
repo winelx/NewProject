@@ -1,15 +1,11 @@
 package com.example.a10942.newproject.Activity;
 
-/**
- * Created by 10942 on 2017/6/23 0023.
- */
-
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -18,9 +14,7 @@ import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVMobilePhoneVerifyCallback;
-import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVUser;
-import com.avos.avoscloud.RequestMobileCodeCallback;
 import com.avos.avoscloud.SignUpCallback;
 import com.example.a10942.newproject.R;
 import com.example.a10942.newproject.Utils.ExitApplication;
@@ -88,20 +82,28 @@ public class RegisteredActivity extends Activity {
         regauthcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phone = regphone.getText().toString();
                 toast("成功");
-//                    AVOSCloud.requestSMSCode(phone, "测试平台Demo 默认签名", "winelx", 10);  // 10 分钟内有效
-                AVOSCloud.requestSMSCodeInBackground(phone, new RequestMobileCodeCallback() {
-                    @Override
+                String passWorld = regpassword.getText().toString();
+                String usrName = regphone.getText().toString();
+                AVUser user = new AVUser();
+                user.setUsername(usrName);
+                user.setPassword(passWorld);
+                user.setEmail(usrName + "@qq.com");
+                // 其他属性可以像其他AVObject对象一样使用put方法添加
+                user.put("mobilePhoneNumber", usrName);
+                user.signUpInBackground(new SignUpCallback() {
                     public void done(AVException e) {
-                        // 发送失败可以查看 e 里面提供的信息
-                        new Thread(new MyCountDownTimer()).start();//开始执行
+                        if (e == null) {
+                            Toast.makeText(RegisteredActivity.this, "调用成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // failed
+                        }
                     }
                 });
             }
         });
-
     }
+
 
     /**
      * id的点击事件
@@ -111,82 +113,28 @@ public class RegisteredActivity extends Activity {
         zhuce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String passWorld = regpassword.getText().toString();
-                String usrName = regphone.getText().toString();
-                String auto = authcode.getText().toString();
-                Judge(passWorld, usrName, auto);
-            }
-        });
-
-    }
-
-    //对输入框的数据进行判读
-    private void Judge(final String password, final String usrname, final String auto) {
-        if (password.isEmpty() || usrname.isEmpty() || auto.isEmpty()) {//判断是否为空
-//            Toast.makeText(this, "手机号和密码不能为空", Toast.LENGTH_SHORT).show();
-            toast("还有未填项");
-        } else {
-            if (utils.isInteger(auto) != true) {//判读验证码是否为整数
-                toast("验证码只能为数字");
-            } else {
-                if (auto.length() == 6) {//判断验证码长度
-
-                    if (password.length() >= 6) {   //判断密码长度
-                        if (password.equals(password)) {//判断两次密码是否一致
-                            if (checkBox.isChecked() != false) {
-                                AVOSCloud.verifySMSCodeInBackground(auto, usrname, new AVMobilePhoneVerifyCallback() {
-                                    @Override
-                                    public void done(AVException e) {
-                                        if (e == null) {
-                                            toast("成功");
-                                            registered(usrname, password, auto);//注册并登陆
-                                        } else {
-                                            e.printStackTrace();
-                                            toast("失败");
-                                        }
-                                    }
-                                });
+                final String passWorld = regpassword.getText().toString();
+                final String usrName = regphone.getText().toString();
+                final String auto = authcode.getText().toString();
+                if (checkBox.isChecked() == true) {
+                    AVUser.verifyMobilePhoneInBackground(auto, new AVMobilePhoneVerifyCallback() {
+                        @Override
+                        public void done(AVException e) {
+                            if (e == null) {
+                                spUtils.clear(context);
+                                spUtils.put(context, "UserName", usrName);
+                                spUtils.put(context, "UserPass", passWorld);
+                                startActivity(new Intent(RegisteredActivity.this, IndexActivity.class));
+                                finish();
                             } else {
-                                Toast.makeText(context, "请阅读并勾选用户协议", Toast.LENGTH_SHORT).show();
+                                Log.d("SMS", "Verified failed!");
                             }
-
-                            //两次密码正确
-                        } else {
-                            //两次面不一致
-                            toast("密码输入不一致");
                         }
-                    } else {
-
-                        toast("密码必须大于6位");
-                    }
-
-
+                    });
+                    Toast.makeText(RegisteredActivity.this, "用户协议", Toast.LENGTH_SHORT).show();
                 } else {
-                    toast("验证码长度不正确");
-                }
-            }
 
-        }
-    }
-
-    void registered(final String usrname, final String password, final String auto) {
-        AVUser user = new AVUser();// 新建 AVUser 对象实例
-        user.setUsername(usrname);// 设置用户名
-        user.setPassword(password);// 设置密码
-        user.signUpInBackground(new SignUpCallback() {
-            @Override
-            public void done(AVException e) {
-                if (e == null) {
-                    // 注册成功，把用户对象赋值给当前用户 AVUser.getCurrentUser()
-                    spUtils.clear(context);
-                    spUtils.put(context, "userName", usrname);
-                    spUtils.put(context, "password", password);
-                    startActivity(new Intent(RegisteredActivity.this, IndexActivity.class));
-                    ExitApplication.getInstance().exit();
-                    toast("注册成功");
-                } else {
-                    // 失败的原因可能有多种，常见的是用户名已经存在。
-                    toast(e.getMessage());
+                    Toast.makeText(RegisteredActivity.this, "勾选用户协议", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -203,10 +151,8 @@ public class RegisteredActivity extends Activity {
     public int T = 60; //倒计时时长
 
     class MyCountDownTimer implements Runnable {
-
         @Override
         public void run() {
-
             //倒计时开始，循环
             while (T > 0) {
                 mHandler.post(new Runnable() {
@@ -223,7 +169,6 @@ public class RegisteredActivity extends Activity {
                 }
                 T--;
             }
-
             //倒计时结束，也就是循环结束
             mHandler.post(new Runnable() {
                 @Override
@@ -235,5 +180,4 @@ public class RegisteredActivity extends Activity {
             T = 60; //最后再恢复倒计时时长
         }
     }
-
 }

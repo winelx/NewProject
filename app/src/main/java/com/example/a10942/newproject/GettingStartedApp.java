@@ -12,7 +12,8 @@ public class GettingStartedApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        AVOSCloud.initialize(this, "qlXAha6uLkazHrTkeLA6EMnh-gzGzoHsz", "L6MHLcv9erNMx92xsYpmL5Vr");
+        AVOSCloud.initialize(this, "pd1VBE9G7gQcWt06uA3HKXQA-gzGzoHsz","BT2dmb5GqQz0IqwrwewOodjS");
         AVOSCloud.setDebugLogEnabled(true);
+
     }
 }

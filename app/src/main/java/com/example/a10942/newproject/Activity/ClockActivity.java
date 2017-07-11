@@ -19,7 +19,6 @@ import com.example.a10942.newproject.Utils.ExitApplication;
  * Created by 10942 on 2017/6/19 0019.
  * 借伞计时
  */
-
 public class ClockActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
